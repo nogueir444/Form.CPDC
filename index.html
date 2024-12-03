@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="scripts.js">
+    <title>FormulárioPedacimDCéu</title>
+</head>
+<body>
+    <header>
+        <h1>Chalés Pedacim Du Céu</h1>
+    </header>
+
+    <main>
+        <form action="https://formsubmit.co/lucassnogu32@gmail.com" method="POST">
+            <h3>Dados Pessoais:</h3>
+                <label for="name">Nome e Sobrenome:</label><br>
+                <input type="text" id="name" name="name"><br>
+                <label for="cpf">CPF:</label><br>
+                <input type="number" id="cpf" name="cpf"><br>
+            <hr>
+
+            <h3>Diária:</h3>
+                <select name="diarias">
+                    <option value="d01"> 1 Diária </option>
+                    <option value="d02"> 2 Diárias </option>
+                    <option value="d03"> 3 Diárias </option>
+                    <option value="d04"> 4 diárias </option>
+                    <option value="d05"> 5 Diárias </option>
+                    <option value="d06"> 6 Diárias </option>
+                    <option value="d07"> 7 Diárias </option>
+               </select><br>
+            <hr>
+
+            <h3>Num. de Hóspedes:</h3>
+               <select name="hospedes">
+                <option value="h1">1 pessoa</option>
+                <option value="h2">2 pessoas</option>
+                <option value="h3">3 pessoas</option>
+                <option value="h4">4 pessoas</option>
+                <option value="h5">5 pessoas</option>
+                <option value="h6">6 pessoas</option>
+               </select>
+            <hr>
+
+            <h3>Data</h3>
+            <p>Check-In</p>
+               <input type="date" name="checkIn">
+            <p>Check-Out</p>
+               <input type="date" name="checkOut">
+            <hr>
+
+            <h3>Chalés:</h3>
+                <select name="chales">
+                    <option value="ch1"> Chalé 01 </option>
+                    <option value="ch2"> Chalé 02 </option>
+                    <option value="ch4"> Chalé 03 </option>
+                    <option value="ch4"> Chalé 04 </option>
+                    <option value="chUau"> Chalé Uau!</option>
+                    <option value="chUp"> Chalé Up!</option>
+                </select><br><br>
+            <hr>
+
+            <input type="submit">
+            <input type="hidden" name="_captcha" value="false">
+        </form>
+    </main>
+</body>
+</html>
