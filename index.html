@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="scripts.js">
-    <title>FormulárioPedacimDCéu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <title>Formulário Pedacim Du Céu</title>
 </head>
 <body>
     <header>
@@ -13,58 +13,171 @@
     </header>
 
     <main>
-        <form action="https://formsubmit.co/lucassnogu32@gmail.com" method="POST">
+        <form>
             <h3>Dados Pessoais:</h3>
-                <label for="name">Nome e Sobrenome:</label><br>
+                <label for="name">Nome Completo:</label><br>
                 <input type="text" id="name" name="name"><br>
                 <label for="cpf">CPF:</label><br>
-                <input type="number" id="cpf" name="cpf"><br>
+                <input type="number" id="cpf" name="cpf" placeholder="xxx.xxx.xxx-xx"><br>
             <hr>
 
             <h3>Diária:</h3>
-                <select name="diarias">
-                    <option value="d01"> 1 Diária </option>
-                    <option value="d02"> 2 Diárias </option>
-                    <option value="d03"> 3 Diárias </option>
-                    <option value="d04"> 4 diárias </option>
-                    <option value="d05"> 5 Diárias </option>
-                    <option value="d06"> 6 Diárias </option>
-                    <option value="d07"> 7 Diárias </option>
+                <select name="diarias" id="diarias">
+                    <option value="1 Diária">1 Diária</option>
+                    <option value="2 Diárias">2 Diárias</option>
+                    <option value="3 Diárias">3 Diárias</option>
+                    <option value="4 Diárias">4 Diárias</option>
+                    <option value="5 Diárias">5 Diárias</option>
+                    <option value="6 Diárias">6 Diárias</option>
+                    <option value="7 Diárias">7 Diárias</option>
+                    <option value="7 Diárias">8 Diárias</option>
+                    <option value="7 Diárias">9 Diárias</option>
+                    <option value="7 Diárias">10 Diárias</option>
                </select><br>
             <hr>
 
             <h3>Num. de Hóspedes:</h3>
-               <select name="hospedes">
-                <option value="h1">1 pessoa</option>
-                <option value="h2">2 pessoas</option>
-                <option value="h3">3 pessoas</option>
-                <option value="h4">4 pessoas</option>
-                <option value="h5">5 pessoas</option>
-                <option value="h6">6 pessoas</option>
+               <select name="hospedes" id="hospedes">
+                <option value="1 pessoa">1 pessoa</option>
+                <option value="2 pessoas">2 pessoas</option>
+                <option value="3 pessoas">3 pessoas</option>
+                <option value="4 pessoas">4 pessoas</option>
                </select>
             <hr>
 
-            <h3>Data</h3>
-            <p>Check-In</p>
-               <input type="date" name="checkIn">
-            <p>Check-Out</p>
-               <input type="date" name="checkOut">
+            <h3>Data:</h3>
+            <p>Check-In:</p>
+               <input type="date" id="checkIn" name="checkIn">
+            <p>Check-Out:</p>
+               <input type="date" id="checkOut" name="checkOut">
             <hr>
 
             <h3>Chalés:</h3>
-                <select name="chales">
-                    <option value="ch1"> Chalé 01 </option>
-                    <option value="ch2"> Chalé 02 </option>
-                    <option value="ch4"> Chalé 03 </option>
-                    <option value="ch4"> Chalé 04 </option>
-                    <option value="chUau"> Chalé Uau!</option>
-                    <option value="chUp"> Chalé Up!</option>
-                </select><br><br>
+                <select name="chales" id="chales">
+                    <option value="Chalé Padrão Nº1">Chalé 01</option>
+                    <option value="Chalé Padrão Nº2">Chalé 02</option>
+                    <option value="Chalé Padrão Nº3">Chalé 03</option>
+                    <option value="Chalé Padrão Nº4">Chalé 04</option>
+                    <option value="Chalé Uau!">Chalé Uau!</option>
+                    <option value="Chalé Up!">Chalé Up!</option>
+                </select><br>
             <hr>
 
-            <input type="submit">
-            <input type="hidden" name="_captcha" value="false">
+            <h3>Pagamento:</h3>
+                <label for="valorT">Valor Total:</label>
+                <input type="number" id="valorTotal" name="valorTotal" placeholder="R$ xxx,xx">
+
+                <select id="formaPagamento" name="formaPagamento" onchange="mostrarParcelas()">
+                    <option value="Pix">Pix</option>
+                    <option value="Cartão">Cartão</option>
+                </select>
+
+                <div id="parcelas" style="display: none;">
+                    <h4>Parcelas (até 12x):</h4>
+                    <select id="parcelasSelect" name="parcelas"></select>
+                </div>
+            <br><hr>
+            <label for="confirmarData">Data de Confirmação:</label>
+            <input type="date" id="confirData" name="confirData">
+
+            <button type="button" onclick="fillPDF()">Criar Voucher</button>
         </form>
     </main>
+
+    <script>
+        function mostrarParcelas() {
+            const formaPagamento = document.getElementById("formaPagamento").value;
+            const divParcelas = document.getElementById("parcelas");
+            if (formaPagamento === "Pix") {
+                divParcelas.style.display = "none";
+            } else if (formaPagamento === "Cartão") {
+                divParcelas.style.display = "block";
+                mostrarOpcoesParcelas();
+            }
+        }
+
+        function mostrarOpcoesParcelas() {
+            const parcelasSelect = document.getElementById("parcelasSelect");
+            parcelasSelect.innerHTML = "1x";
+            for (let i = 1; i <= 12; i++) {
+            const option = document.createElement("option");
+            option.value = `${i}x`; 
+            option.textContent = `${i}x`;
+            parcelasSelect.appendChild(option);
+            }
+        }
+        
+
+        function formatCPF(cpf) {
+            cpf = cpf.replace(/\D/g, "");
+            return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+        }
+
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split("-");
+            return `${day}/${month}/${year}`;
+        }
+
+
+        async function fillPDF() {
+            const formName = document.getElementById("name").value;
+            const formCpf = formatCPF(document.getElementById("cpf").value);
+            const formDiarias = document.getElementById("diarias").value;
+            const formHospedes = document.getElementById("hospedes").value;
+            const formCheckI = formatDate(document.getElementById("checkIn").value);
+            const formCheckO = formatDate(document.getElementById("checkOut").value);
+            const formChales = document.getElementById("chales").value;
+            const formValorT = document.getElementById("valorTotal").value;
+            const formPagar = document.getElementById("formaPagamento").value
+            const formDataCon = formatDate(document.getElementById("confirData").value);
+
+
+             let formParcelas = "1x";
+                const parcelasDiv = document.getElementById("parcelas");
+                if (parcelasDiv.style.display === "block") {
+                    formParcelas = document.getElementById("parcelasSelect").value || "1x";
+                }
+            
+            try {
+                const response = await fetch("Voucher Pedacim Du Céu.pdf");
+                if (!response.ok) {
+                    throw new Error(`Erro ao carregar o PDF. Código HTTP: ${response.status}`);
+                }
+
+                const existingPdfBytes = await response.arrayBuffer();
+                console.log("PDF carregado com sucesso!");
+
+                const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
+                console.log("PDF carregado na memória!");
+
+                const pages = pdfDoc.getPages();
+                const firstPage = pages[0];
+                const { width, height } = firstPage.getSize();
+
+                firstPage.drawText(`${formName}`, { x: 140, y: height - 298, size: 27 });
+                firstPage.drawText(`${formCpf}`, { x: 90, y: height - 337, size: 27 });
+                firstPage.drawText(`Hospedagem: ${formDiarias}`, { x: 14, y: height - 262, size: 27 });
+                firstPage.drawText(`${formHospedes}`, { x: 390, y: height - 262, size: 27 });
+                firstPage.drawText(`${formCheckI}`, { x: 345, y: height - 452, size: 27 });
+                firstPage.drawText(`${formCheckO}`, { x: 305, y: height - 490, size: 27 });
+                firstPage.drawText(`${formChales}`, { x: 190, y: height - 412, size: 27 });
+                firstPage.drawText(`R$${formValorT}`, { x: 160, y: height - 528, size: 27 });
+                firstPage.drawText(`${formPagar}`, { x: 295, y: height - 567, size: 27 });
+                firstPage.drawText(`em até ${formParcelas}`, { x: 390, y: height - 567, size: 27 });
+                firstPage.drawText(`${formDataCon}`, { x: 220, y: height - 643, size: 27 });
+
+                const pdfBytes = await pdfDoc.save();
+                const blob = new Blob([pdfBytes], { type: "application/pdf" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "VoucherPedacimDuCéu.pdf";
+                link.click();
+
+            } catch (error) {
+                console.error("Erro ao carregar ou preencher o PDF:", error.message || error);
+                alert("Erro: " + (error.message || "Verifique o console para mais detalhes."));
+            }
+        }
+    </script>
 </body>
 </html>
