@@ -125,3 +125,19 @@ button:active {
     }
 }
 
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    resize: vertical; /* Permite redimensionar apenas na vertical */
+    margin-bottom: 15px;
+}
+
+textarea:focus {
+    border-color: #2c5f2d;
+    outline: none;
+    box-shadow: 0 0 5px rgba(44, 95, 45, 0.5);
+}
