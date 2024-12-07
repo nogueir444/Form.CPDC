@@ -80,6 +80,11 @@
             <label for="confirmarData">Data de Confirmação:</label>
             <input type="date" id="confirData" name="confirData">
 
+            <h3>Observações:</h3>
+                <label for="observacoes">Observações:</label>
+                <textarea id="observacoes" name="observacoes" rows="5" placeholder="Escreva suas observações aqui..."></textarea>
+
+
             <button type="button" onclick="fillPDF()">Criar Voucher</button>
         </form>
     </main>
@@ -130,6 +135,9 @@
             const formValorT = document.getElementById("valorTotal").value;
             const formPagar = document.getElementById("formaPagamento").value
             const formDataCon = formatDate(document.getElementById("confirData").value);
+            const formObservacoes = document.getElementById("observacoes").value;
+            
+
 
 
              let formParcelas = "1x";
@@ -165,6 +173,8 @@
                 firstPage.drawText(`${formPagar}`, { x: 295, y: height - 567, size: 27 });
                 firstPage.drawText(`em até ${formParcelas}`, { x: 390, y: height - 567, size: 27 });
                 firstPage.drawText(`${formDataCon}`, { x: 220, y: height - 643, size: 27 });
+                firstPage.drawText(`${formObservacoes}`, { x: 50, y: height - 700, size: 27 });
+
 
                 const pdfBytes = await pdfDoc.save();
                 const blob = new Blob([pdfBytes], { type: "application/pdf" });
